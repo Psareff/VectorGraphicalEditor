@@ -8,8 +8,8 @@ namespace VectorGraphicalEditor
 {
     public class VectorCanvas
     {
-        double _CanvasHeight;
-        double _CanvasWidth;
+        public double _CanvasHeight = 0;
+        public double _CanvasWidth = 0;
         Figure[] _FiguresArray;
 
         public VectorCanvas()
@@ -23,18 +23,16 @@ namespace VectorGraphicalEditor
             if (figure is null) throw new SystemException("Figure, pushed to constructor can't be null!");
             _FiguresArray = new Figure[1];
             _FiguresArray[0] = figure;
-            _CanvasHeight = Convert.ToDouble(Math.Ceiling(figure is Circle ? ((Circle)figure).Radius * 2 : ((Triangle)figure).CircumscribedCircleRadiusCalculate() * 2));
+            _CanvasHeight = Convert.ToDouble(Math.Ceiling(figure.RadiusCalc()));
             _CanvasWidth = _CanvasHeight;
         }
         public double CanvasHeight
         {
             get { return _CanvasHeight; }
-            set { _CanvasHeight = value; }
         }
         public double CanvasWidth
         {
             get { return _CanvasWidth; }
-            set { _CanvasWidth = value; }
         }
         public void AddFigureToPainting(Figure figure)
         {
@@ -45,22 +43,43 @@ namespace VectorGraphicalEditor
                 _FiguresArray[_FiguresArray.Length - 1] = figure;
                 foreach (Figure figureIterator in _FiguresArray)
                 {
-
-                    double heightBuffer = ((figureIterator is Circle ? ((Circle)figureIterator).Radius : ((Triangle)figureIterator).CircumscribedCircleRadiusCalculate()) +
-                       Math.Abs((figureIterator is Circle ? ((Circle)figureIterator)._Center.Item2 : ((Triangle)figureIterator).CircumscribedCircleCenterCalculate().Item2)))*2;
-                    double widthBuffer = ((figureIterator is Circle ? ((Circle)figureIterator).Radius : ((Triangle)figureIterator).CircumscribedCircleRadiusCalculate()) +
-                       Math.Abs((figureIterator is Circle ? ((Circle)figureIterator)._Center.Item1 : ((Triangle)figureIterator).CircumscribedCircleCenterCalculate().Item1)))*2;
-
+                    double widthBuffer = (figureIterator.RadiusCalc() + Math.Abs(figureIterator.CenterCalc().Item1))*2;
+                    double heightBuffer = (figureIterator.RadiusCalc() + Math.Abs(figureIterator.CenterCalc().Item2))*2;
                     if (heightBuffer > _CanvasHeight)
                         _CanvasHeight = heightBuffer;
                     if (widthBuffer > _CanvasWidth)
                         _CanvasWidth = widthBuffer;
                 }
-                Console.WriteLine(_CanvasWidth);
-                Console.WriteLine(_CanvasHeight);
 
             }
         }
+        public (uint circleQty, uint trisQty) QtyOfFiguresOnCanvas()
+        {
+            uint trisQty = 0, circleQty = 0;
+            foreach (Figure figureIterator in _FiguresArray)
+            {
+                _ = figureIterator is Circle ? circleQty ++ : trisQty ++;
+            }
+            return (circleQty, trisQty);
+        }
+        public void DeleteByIndex(uint index)
+        { 
+            for (uint i = index; i < _FiguresArray.Length-1; i++)
+                _FiguresArray[i] = _FiguresArray[i + 1];
+            Array.Resize(ref _FiguresArray, _FiguresArray.Length - 1);
+        }
+        public Figure Return1 (uint index)
+        {
+            return _FiguresArray[index];
+        }
+        public void ShiftAll(int shiftOx, int shiftOy)
+        {
+            foreach (Figure figureIterator in _FiguresArray)
+            {
+                figureIterator.ShiftOxOy((shiftOx, shiftOy));
+            }
+        }
+
 
     }
 }

@@ -19,28 +19,41 @@ namespace VectorGraphicalEditor
         internal double Radius
         {
             get { return _Radius; }
-            set { _Radius = value; }
+            set 
+            {
+                if (value > 0) _Radius = value;
+                else throw new SystemException("Invalid radius pushed!");
+            }
         }
-
+        public override double RadiusCalc()
+        {
+            return _Radius;
+        }
+        public override (double, double) CenterCalc()
+        {
+            return _Center;
+        }
         public Circle() : base(Color.White, Color.White)
-        {   
+        {
             _Radius = 1;
             _Center = (0, 0);
         }
 
-        public Circle((double, double) Center, double Radius, Color FillColor, Color ContourColor) : base (FillColor, ContourColor)
+        public Circle((double, double) Center, double Radius, Color FillColor, Color ContourColor) : base(FillColor, ContourColor)
         {
             _Center = Center;
-            _Radius = Radius;
+            if (Radius > 0) _Radius = Radius;
+            else throw new SystemException("Invalid radius pushed!");
+
         }
 
         public override double PerimeterCalculate()
         {
-            return 2*Math.PI*_Radius;
+            return 2 * Math.PI * _Radius;
         }
         public override double SquareCalculate()
         {
-            return Math.PI*Math.Pow(_Radius, 2);
+            return Math.PI * Math.Pow(_Radius, 2);
         }
         public override void ShiftOxOy((double, double) Shift)
         {
