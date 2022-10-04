@@ -20,19 +20,44 @@ namespace VectorGraphicalEditor
                 double firstSideLength = SideLengthCalculate(SideCoordinatesCalculate(value, _SecondVertex));
                 double secondSideLength = SideLengthCalculate(SideCoordinatesCalculate(_SecondVertex, _ThirdVertex));
                 double thirdSideLength = SideLengthCalculate(SideCoordinatesCalculate(_ThirdVertex, value));
-                //if ()
-                _FirstVertex = value;
+                if (firstSideLength + secondSideLength > thirdSideLength &&
+                    firstSideLength + thirdSideLength > secondSideLength &&
+                    secondSideLength + thirdSideLength > firstSideLength)
+                    _FirstVertex = value;
+                else throw new SystemException("Invalid vertex pushed!");
             }
         }
         public  (double, double) SecondVertex
         {
             get { return _SecondVertex; }
-            set { _SecondVertex = value; }
+            set 
+            {
+                double firstSideLength = SideLengthCalculate(SideCoordinatesCalculate(_FirstVertex, value));
+                double secondSideLength = SideLengthCalculate(SideCoordinatesCalculate(value, _ThirdVertex));
+                double thirdSideLength = SideLengthCalculate(SideCoordinatesCalculate(_ThirdVertex, _FirstVertex));
+                if (firstSideLength + secondSideLength > thirdSideLength &&
+                    firstSideLength + thirdSideLength > secondSideLength &&
+                    secondSideLength + thirdSideLength > firstSideLength)
+                    _SecondVertex = value;
+                else throw new SystemException("Invalid vertex pushed!");
+
+            }
         }
         public (double, double) ThirdVertex
         {
             get { return _ThirdVertex; }
-            set { _ThirdVertex = value; }
+            set 
+            {
+                double firstSideLength = SideLengthCalculate(SideCoordinatesCalculate(_FirstVertex, _SecondVertex));
+                double secondSideLength = SideLengthCalculate(SideCoordinatesCalculate(_SecondVertex, value));
+                double thirdSideLength = SideLengthCalculate(SideCoordinatesCalculate(value, _FirstVertex));
+                if (firstSideLength + secondSideLength > thirdSideLength &&
+                    firstSideLength + thirdSideLength > secondSideLength &&
+                    secondSideLength + thirdSideLength > firstSideLength)
+                    _ThirdVertex = value;
+                else throw new SystemException("Invalid vertex pushed!");
+
+            }
         }
 
         public Triangle() : base(Color.White, Color.White)
@@ -44,9 +69,18 @@ namespace VectorGraphicalEditor
 
         public Triangle((double, double) Vertex1, (double, double) Vertex2, (double, double) Vertex3, Color FillColor, Color ContourColor) : base(FillColor, ContourColor)
         {
-            _FirstVertex = Vertex1;
-            _SecondVertex = Vertex2;
-            _ThirdVertex = Vertex3;
+            double firstSideLength = SideLengthCalculate(SideCoordinatesCalculate(Vertex1, Vertex2));
+            double secondSideLength = SideLengthCalculate(SideCoordinatesCalculate(Vertex2, Vertex3));
+            double thirdSideLength = SideLengthCalculate(SideCoordinatesCalculate(Vertex3, Vertex1));
+            if (firstSideLength + secondSideLength > thirdSideLength &&
+                firstSideLength + thirdSideLength > secondSideLength &&
+                secondSideLength + thirdSideLength > firstSideLength)
+            {
+                _FirstVertex = Vertex1;
+                _SecondVertex = Vertex2;
+                _ThirdVertex = Vertex3;
+            }
+            else throw new SystemException("Invalid vertexes pushed!");
             FillColor = Color.White;
             ContourColor = Color.White;
         }

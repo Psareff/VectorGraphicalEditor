@@ -63,10 +63,13 @@ namespace VectorGraphicalEditor
             return (circleQty, trisQty);
         }
         public void DeleteByIndex(uint index)
-        { 
-            for (uint i = index; i < _FiguresArray.Length-1; i++)
-                _FiguresArray[i] = _FiguresArray[i + 1];
-            Array.Resize(ref _FiguresArray, _FiguresArray.Length - 1);
+        { if (index < _FiguresArray.Length)
+            {
+                for (uint i = index; i < _FiguresArray.Length - 1; i++)
+                    _FiguresArray[i] = _FiguresArray[i + 1];
+                Array.Resize(ref _FiguresArray, _FiguresArray.Length - 1);
+            }
+        else throw new SystemException("Invalid index to delete!");
         }
         public Figure Return1 (uint index)
         {
