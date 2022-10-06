@@ -26,6 +26,11 @@ namespace VectorGraphicalEditor
             _CanvasHeight = Convert.ToDouble(Math.Ceiling(figure.RadiusCalc()));
             _CanvasWidth = _CanvasHeight;
         }
+        public VectorCanvas(params Figure[] figures)
+        {
+            _FiguresArray = figures;
+            DefineHeightAndWidthOfCanvas();
+        }
         public double CanvasHeight
         {
             get { return _CanvasHeight; }
@@ -41,10 +46,32 @@ namespace VectorGraphicalEditor
             {
                 Array.Resize(ref _FiguresArray, _FiguresArray.Length + 1);
                 _FiguresArray[_FiguresArray.Length - 1] = figure;
+                DefineHeightAndWidthOfCanvas();
+
+            }
+        }
+        public void DefineHeightAndWidthOfCanvas()
+        {
+            foreach (Figure figureIterator in _FiguresArray)
+            {
+                double widthBuffer = (figureIterator.RadiusCalc() + Math.Abs(figureIterator.CenterCalc().Item1)) * 2;
+                double heightBuffer = (figureIterator.RadiusCalc() + Math.Abs(figureIterator.CenterCalc().Item2)) * 2;
+                if (heightBuffer > _CanvasHeight)
+                    _CanvasHeight = heightBuffer;
+                if (widthBuffer > _CanvasWidth)
+                    _CanvasWidth = widthBuffer;
+            }
+        }
+        public void AddMultipleFiguresToPainting(params Figure[] figures)
+        {
+            if (figures is null) throw new SystemException("Figure, pushed to adding op can't be null!");
+            else
+            {
+                _FiguresArray = figures;
                 foreach (Figure figureIterator in _FiguresArray)
                 {
-                    double widthBuffer = (figureIterator.RadiusCalc() + Math.Abs(figureIterator.CenterCalc().Item1))*2;
-                    double heightBuffer = (figureIterator.RadiusCalc() + Math.Abs(figureIterator.CenterCalc().Item2))*2;
+                    double widthBuffer = (figureIterator.RadiusCalc() + Math.Abs(figureIterator.CenterCalc().Item1)) * 2;
+                    double heightBuffer = (figureIterator.RadiusCalc() + Math.Abs(figureIterator.CenterCalc().Item2)) * 2;
                     if (heightBuffer > _CanvasHeight)
                         _CanvasHeight = heightBuffer;
                     if (widthBuffer > _CanvasWidth)

@@ -20,6 +20,7 @@ namespace VectorGraphicalEditor
                 double firstSideLength = SideLengthCalculate(SideCoordinatesCalculate(value, _SecondVertex));
                 double secondSideLength = SideLengthCalculate(SideCoordinatesCalculate(_SecondVertex, _ThirdVertex));
                 double thirdSideLength = SideLengthCalculate(SideCoordinatesCalculate(_ThirdVertex, value));
+                Console.WriteLine(firstSideLength + "; " + secondSideLength + "; " + thirdSideLength);
                 if (firstSideLength + secondSideLength > thirdSideLength &&
                     firstSideLength + thirdSideLength > secondSideLength &&
                     secondSideLength + thirdSideLength > firstSideLength)
@@ -35,6 +36,7 @@ namespace VectorGraphicalEditor
                 double firstSideLength = SideLengthCalculate(SideCoordinatesCalculate(_FirstVertex, value));
                 double secondSideLength = SideLengthCalculate(SideCoordinatesCalculate(value, _ThirdVertex));
                 double thirdSideLength = SideLengthCalculate(SideCoordinatesCalculate(_ThirdVertex, _FirstVertex));
+                Console.WriteLine(firstSideLength + "; " + secondSideLength + "; " + thirdSideLength);
                 if (firstSideLength + secondSideLength > thirdSideLength &&
                     firstSideLength + thirdSideLength > secondSideLength &&
                     secondSideLength + thirdSideLength > firstSideLength)
@@ -49,8 +51,10 @@ namespace VectorGraphicalEditor
             set 
             {
                 double firstSideLength = SideLengthCalculate(SideCoordinatesCalculate(_FirstVertex, _SecondVertex));
-                double secondSideLength = SideLengthCalculate(SideCoordinatesCalculate(_SecondVertex, value));
-                double thirdSideLength = SideLengthCalculate(SideCoordinatesCalculate(value, _FirstVertex));
+                double secondSideLength = SideLengthCalculate(SideCoordinatesCalculate(value, _SecondVertex));
+                double thirdSideLength = SideLengthCalculate(SideCoordinatesCalculate(_FirstVertex, value));
+                Console.WriteLine(firstSideLength + "; " + secondSideLength + "; " + thirdSideLength);
+
                 if (firstSideLength + secondSideLength > thirdSideLength &&
                     firstSideLength + thirdSideLength > secondSideLength &&
                     secondSideLength + thirdSideLength > firstSideLength)
@@ -87,7 +91,7 @@ namespace VectorGraphicalEditor
 
         (double, double) SideCoordinatesCalculate((double, double) Vertex1, (double, double) Vertex2)
         {
-            return (Vertex2.Item1 - Vertex1.Item1, Vertex2.Item2 - Vertex1.Item1);
+            return (Vertex2.Item1 - Vertex1.Item1, Vertex2.Item2 - Vertex1.Item2);
         }
         double SideLengthCalculate((double, double) Side)
         {

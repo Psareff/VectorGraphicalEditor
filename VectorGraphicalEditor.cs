@@ -16,27 +16,14 @@ namespace VectorGraphicalEditor
                 Circle cr2 = new Circle((-12, -24), 100, Color.Red, Color.Blue);
                 Circle cr3 = new Circle((1, -1), 2, Color.Red, Color.Blue);
                 Triangle tr1 = new Triangle((1, 1), (500, 1), (250, 500), Color.Green, Color.Green);
-
+                Circle[] crarray =  { cr1, cr2, cr3 };
                 VectorCanvas vc = new VectorCanvas();
+                VectorCanvas vc1 = new VectorCanvas(crarray);
+                Console.WriteLine("Width:" + vc1.CanvasWidth + " Height:" + vc1.CanvasHeight);
+                vc1.AddFigureToPainting(tr1);
+                Console.WriteLine("Width:" + vc1.CanvasWidth + " Height:" + vc1.CanvasHeight);
 
-                vc.AddFigureToPainting(cr1);
-                Console.WriteLine("Width:" + vc.CanvasWidth + " Height:" + vc.CanvasHeight);
-                vc.AddFigureToPainting(cr2);
-                Console.WriteLine("Width:" + vc.CanvasWidth + " Height:" + vc.CanvasHeight);
-                vc.AddFigureToPainting(tr1);
-                Console.WriteLine("Width:" + vc.CanvasWidth + " Height:" + vc.CanvasHeight);
-                vc.AddFigureToPainting(cr3);
-                Console.WriteLine("Width:" + vc.CanvasWidth + " Height:" + vc.CanvasHeight);
-
-                Console.WriteLine(vc.QtyOfFiguresOnCanvas().circleQty);
-                Console.WriteLine(vc.QtyOfFiguresOnCanvas().trisQty);
-                vc.DeleteByIndex(5);
-                Console.WriteLine(vc.QtyOfFiguresOnCanvas().circleQty);
-                Console.WriteLine(vc.QtyOfFiguresOnCanvas().trisQty);
-
-                Figure tr4 = vc.Return1(2);
-
-                tr1.ThirdVertex = (1000, 1);
+                tr1.SecondVertex = (1000, 1000);
                 /*
                 double a = tr4.RadiusCalc();
                 if (tr4 is Triangle)
